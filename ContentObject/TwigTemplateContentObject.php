@@ -28,6 +28,20 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class TwigTemplateContentObject
 {
     /**
+     * @param string $name  The content object name, eg. "TWIGTEMPLATE"
+     * @param array  $conf  The array with TypoScript properties for the content object
+     * @param string $TSkey a string label used for the internal debugging tracking
+     */
+    public function cObjGetSingleExt(string $name, array $conf, $TSkey, ContentObjectRenderer $cObj): string
+    {
+        if ('TWIGTEMPLATE' === $name) {
+            return $this->render($conf, $cObj);
+        }
+
+        return '';
+    }
+
+    /**
      * Rendering the cObject, TWIGTEMPLATE.
      *
      * Configuration properties:
@@ -48,20 +62,23 @@ class TwigTemplateContentObject
      */
     public function render(array $conf, ContentObjectRenderer $cObj): string
     {
+        if (!is_array($conf)) {
+            $conf = [];
+        }
+
+        $template = $this->getTemplate($conf, $cObj);
+
         return 'This will be a Twig template';
     }
 
-    /**
-     * @param string $name  The content object name, eg. "TWIGTEMPLATE"
-     * @param array  $conf  The array with TypoScript properties for the content object
-     * @param string $TSkey a string label used for the internal debugging tracking
-     */
-    public function cObjGetSingleExt(string $name, array $conf, $TSkey, ContentObjectRenderer $cObj): string
+    private function getTemplate(array $conf, ContentObjectRenderer $cObj): string
     {
-        if ('TWIGTEMPLATE' === $name) {
-            return $this->render($conf, $cObj);
+        if ((!empty($conf['template']) || !empty($conf['template.']))) {
+            return isset($conf['template.'])
+                ? $cObj->stdWrap(isset($conf['template']) ? $conf['template'] : '', $conf['template.'])
+                : $conf['template'];
         }
 
-        return '';
+        return 'layouts/default.html.twig';
     }
 }
