@@ -38,5 +38,6 @@ class BartacusTwigExtension extends Extension
         );
 
         $loader->load('services.xml');
+        $loader->load('typo3.xml');
     }
 }

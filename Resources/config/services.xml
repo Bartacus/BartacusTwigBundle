@@ -5,6 +5,8 @@
 
     <services>
         <service id="Bartacus\Bundle\TwigBundle\ContentObject\TwigTemplateContentObject">
+            <argument type="service" id="Symfony\Component\Templating\EngineInterface" />
+            <argument type="service" id="TYPO3\CMS\Core\TypoScript\TypoScriptService" />
             <tag name="bartacus.make_instance" />
         </service>
     </services>

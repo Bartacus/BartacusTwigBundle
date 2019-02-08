@@ -23,10 +23,28 @@ declare(strict_types=1);
 
 namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
+use Symfony\Component\Templating\EngineInterface;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class TwigTemplateContentObject
 {
+    /**
+     * @var EngineInterface
+     */
+    private $templating;
+
+    /**
+     * @var TypoScriptService
+     */
+    private $typoScriptService;
+
+    public function __construct(EngineInterface $templating, TypoScriptService $typoScriptService)
+    {
+        $this->templating = $templating;
+        $this->typoScriptService = $typoScriptService;
+    }
+
     /**
      * @param string $name  The content object name, eg. "TWIGTEMPLATE"
      * @param array  $conf  The array with TypoScript properties for the content object
@@ -68,7 +86,10 @@ class TwigTemplateContentObject
 
         $template = $this->getTemplate($conf, $cObj);
 
-        return 'This will be a Twig template';
+        $variables = $this->getContentObjectVariables($conf, $cObj);
+        $variables['settings'] = $this->transformSettings($conf);
+
+        return $this->templating->render($template, $variables);
     }
 
     private function getTemplate(array $conf, ContentObjectRenderer $cObj): string
@@ -80,5 +101,41 @@ class TwigTemplateContentObject
         }
 
         return 'layouts/default.html.twig';
+    }
+
+    private function getContentObjectVariables(array $conf, ContentObjectRenderer $cObj): array
+    {
+        $variables = [];
+        $reservedVariables = ['data', 'current', 'settings'];
+
+        // Accumulate the variables to be process and loop them through cObjGetSingle
+        $variablesToProcess = (array) $conf['variables.'];
+        foreach ($variablesToProcess as $variableName => $cObjType) {
+            if (is_array($cObjType)) {
+                continue;
+            }
+
+            if (!in_array($variableName, $reservedVariables, true)) {
+                $variables[$variableName] = $cObj->cObjGetSingle($cObjType, $variablesToProcess[$variableName.'.']);
+            } else {
+                throw new \InvalidArgumentException(
+                    'Cannot use reserved name "'.$variableName.'" as variable name in TWIGTEMPLATE.'
+                );
+            }
+        }
+
+        $variables['data'] = $cObj->data;
+        $variables['current'] = $cObj->data[$cObj->currentValKey];
+
+        return $variables;
+    }
+
+    private function transformSettings(array $conf): array
+    {
+        if (isset($conf['settings.'])) {
+            return $this->typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
+        }
+
+        return [];
     }
 }
