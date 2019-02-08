@@ -25,6 +25,7 @@ namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
 use Twig\Environment;
 use Twig\Template;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -40,10 +41,16 @@ class TwigTemplateContentObject
      */
     private $typoScriptService;
 
-    public function __construct(Environment $twig, TypoScriptService $typoScriptService)
+    /**
+     * @var PageRenderer
+     */
+    private $pageRenderer;
+
+    public function __construct(Environment $twig, TypoScriptService $typoScriptService, PageRenderer $pageRenderer)
     {
         $this->twig = $twig;
         $this->typoScriptService = $typoScriptService;
+        $this->pageRenderer = $pageRenderer;
     }
 
     /**
@@ -94,8 +101,11 @@ class TwigTemplateContentObject
         $variables = $this->getContentObjectVariables($conf, $cObj);
         $variables['settings'] = $this->transformSettings($conf);
 
+        /** @var Template $template */
         $template = $this->twig->loadTemplate($name);
         $context = $this->twig->mergeGlobals($variables);
+
+        $this->renderIntoPageRenderer($template, $context);
 
         return $this->renderBlock($template, 'body', $context);
     }
@@ -145,6 +155,20 @@ class TwigTemplateContentObject
         }
 
         return [];
+    }
+
+    private function renderIntoPageRenderer(Template $template, array $context): void
+    {
+        $header = $this->renderBlock($template, 'header', $context);
+        $footer = $this->renderBlock($template, 'footer', $context);
+
+        if (!empty(trim($header))) {
+            $this->pageRenderer->addHeaderData($header);
+        }
+
+        if (!empty(trim($footer))) {
+            $this->pageRenderer->addFooterData($footer);
+        }
     }
 
     /**

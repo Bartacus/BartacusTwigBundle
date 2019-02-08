@@ -28,5 +28,10 @@
             <factory service="Bartacus\Bundle\BartacusBundle\Typo3\ServiceBridge" method="makeInstance" />
             <argument>TYPO3\CMS\Core\TypoScript\TypoScriptService</argument>
         </service>
+
+        <service id="TYPO3\CMS\Core\Page\PageRenderer" shared="false">
+            <factory service="Bartacus\Bundle\BartacusBundle\Typo3\ServiceBridge" method="makeInstance" />
+            <argument>TYPO3\CMS\Core\Page\PageRenderer</argument>
+        </service>
     </services>
 </container>
