@@ -23,25 +23,26 @@ declare(strict_types=1);
 
 namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
+use Twig\Template;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class TwigTemplateContentObject
 {
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $templating;
+    private $twig;
 
     /**
      * @var TypoScriptService
      */
     private $typoScriptService;
 
-    public function __construct(EngineInterface $templating, TypoScriptService $typoScriptService)
+    public function __construct(Environment $twig, TypoScriptService $typoScriptService)
     {
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->typoScriptService = $typoScriptService;
     }
 
@@ -77,6 +78,10 @@ class TwigTemplateContentObject
      * @param array $conf Array of TypoScript properties
      *
      * @return string The rendered output
+     *
+     * @throws \Twig_Error_Loader When the template cannot be found
+     * @throws \Twig_Error_Runtime When a previously generated cache is corrupted
+     * @throws \Twig_Error_Syntax When an error occurred during compilation
      */
     public function render(array $conf, ContentObjectRenderer $cObj): string
     {
@@ -84,12 +89,15 @@ class TwigTemplateContentObject
             $conf = [];
         }
 
-        $template = $this->getTemplate($conf, $cObj);
+        $name = $this->getTemplate($conf, $cObj);
 
         $variables = $this->getContentObjectVariables($conf, $cObj);
         $variables['settings'] = $this->transformSettings($conf);
 
-        return $this->templating->render($template, $variables);
+        $template = $this->twig->loadTemplate($name);
+        $context = $this->twig->mergeGlobals($variables);
+
+        return $this->renderBlock($template, 'body', $context);
     }
 
     private function getTemplate(array $conf, ContentObjectRenderer $cObj): string
@@ -137,5 +145,30 @@ class TwigTemplateContentObject
         }
 
         return [];
+    }
+
+    /**
+     * Renders a Twig block with error handling.
+     *
+     * This avoids getting some leaked buffer when an exception occurs.
+     * Twig blocks are not taking care of it as they are not meant to be rendered directly.
+     */
+    private function renderBlock(Template $template, $block, array $context): string
+    {
+        $level = ob_get_level();
+        ob_start();
+
+        try {
+            $rendered = $template->renderBlock($block, $context);
+            ob_end_clean();
+
+            return $rendered;
+        } catch (\RuntimeException $e) {
+            while (ob_get_level() > $level) {
+                ob_end_clean();
+            }
+
+            throw $e;
+        }
     }
 }

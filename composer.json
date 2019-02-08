@@ -19,7 +19,6 @@
         "symfony/config": "^3.3 || ^4.0",
         "symfony/dependency-injection": "^3.3 || ^4.0",
         "symfony/http-kernel": "^3.3 || ^4.0",
-        "symfony/templating": "^3.3 || ^4.0",
         "twig/twig": "^1.35 || ^2.0",
         "typo3/cms-core": "^8.7 || ^9.5",
         "typo3/cms-frontend": "^8.7 || ^9.5"
