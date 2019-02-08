@@ -1,0 +1,48 @@
+{
+    "name": "bartacus/twig-bundle",
+    "type": "typo3-cms-extension",
+    "description": "Support bundle for using Twig together with Bartacus and TYPO3",
+    "keywords": [ "typo3", "symfony", "twig" ],
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Emily Karisch"
+        },
+        {
+            "name": "pixelart GmbH",
+            "homepage": "https://www.pixelart.at"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "bartacus/bartacus-bundle": "^1.0 || ^2.0@dev",
+        "symfony/config": "^3.3 || ^4.0",
+        "symfony/dependency-injection": "^3.3 || ^4.0",
+        "symfony/http-kernel": "^3.3 || ^4.0",
+        "twig/twig": "^1.35 || ^2.0",
+        "typo3/cms-frontend": "^8.7 || ^9.5"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.5",
+        "roave/security-advisories": "dev-master",
+        "typo3/cms-composer-installers": "^1.5 || ^2.0"
+    },
+    "replace": {
+        "bartacus_twig": "self.version"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bartacus\\Bundle\\TwigBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "extensions-in-vendor-dir": true,
+            "prepare-web-dir": false
+        }
+    }
+}
