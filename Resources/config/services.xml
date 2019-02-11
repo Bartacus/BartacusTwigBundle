@@ -10,5 +10,14 @@
             <argument type="service" id="TYPO3\CMS\Core\Page\PageRenderer" />
             <tag name="bartacus.make_instance" />
         </service>
+
+        <service id="Bartacus\Bundle\TwigBundle\Twig\ContentObjectExtension">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="Bartacus\Bundle\TwigBundle\Twig\ContentObjectRuntime">
+            <argument type="service" id="TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface" />
+            <tag name="twig.runtime"/>
+        </service>
     </services>
 </container>

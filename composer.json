@@ -15,12 +15,13 @@
     ],
     "require": {
         "php": "^7.1",
-        "bartacus/bartacus-bundle": "^1.0 || ^2.0@dev",
+        "bartacus/bartacus-bundle": "~1.1.13 || ^1.2.2 || ^2.0@dev",
         "symfony/config": "^3.3 || ^4.0",
         "symfony/dependency-injection": "^3.3 || ^4.0",
         "symfony/http-kernel": "^3.3 || ^4.0",
         "twig/twig": "^1.35 || ^2.0",
         "typo3/cms-core": "^8.7 || ^9.5",
+        "typo3/cms-extbase": "^8.7 || ^9.5",
         "typo3/cms-frontend": "^8.7 || ^9.5"
     },
     "require-dev": {
