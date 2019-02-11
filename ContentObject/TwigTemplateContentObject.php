@@ -84,15 +84,15 @@ class TwigTemplateContentObject
      *
      * @param array $conf Array of TypoScript properties
      *
-     * @return string The rendered output
-     *
-     * @throws \Twig_Error_Loader When the template cannot be found
+     * @throws \Twig_Error_Loader  When the template cannot be found
      * @throws \Twig_Error_Runtime When a previously generated cache is corrupted
-     * @throws \Twig_Error_Syntax When an error occurred during compilation
+     * @throws \Twig_Error_Syntax  When an error occurred during compilation
+     *
+     * @return string The rendered output
      */
     public function render(array $conf, ContentObjectRenderer $cObj): string
     {
-        if (!is_array($conf)) {
+        if (!\is_array($conf)) {
             $conf = [];
         }
 
@@ -114,7 +114,7 @@ class TwigTemplateContentObject
     {
         if ((!empty($conf['template']) || !empty($conf['template.']))) {
             return isset($conf['template.'])
-                ? $cObj->stdWrap(isset($conf['template']) ? $conf['template'] : '', $conf['template.'])
+                ? $cObj->stdWrap($conf['template'] ?? '', $conf['template.'])
                 : $conf['template'];
         }
 
@@ -129,11 +129,11 @@ class TwigTemplateContentObject
         // Accumulate the variables to be process and loop them through cObjGetSingle
         $variablesToProcess = (array) $conf['variables.'];
         foreach ($variablesToProcess as $variableName => $cObjType) {
-            if (is_array($cObjType)) {
+            if (\is_array($cObjType)) {
                 continue;
             }
 
-            if (!in_array($variableName, $reservedVariables, true)) {
+            if (!\in_array($variableName, $reservedVariables, true)) {
                 $variables[$variableName] = $cObj->cObjGetSingle($cObjType, $variablesToProcess[$variableName.'.']);
             } else {
                 throw new \InvalidArgumentException(
