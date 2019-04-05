@@ -75,7 +75,7 @@ class TwigTemplateContentObject
      * - variable array of cObjects, the keys are the variable names in twig
      *
      * Example:
-     * 10 = FLUIDTEMPLATE
+     * 10 = TWIGTEMPLATE
      * 10.template = layouts/default.html.twig
      * 10.variables {
      *   mylabel = TEXT
