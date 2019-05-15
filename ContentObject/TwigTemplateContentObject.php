@@ -25,6 +25,7 @@ namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
 use Twig\Environment;
 use Twig\Template;
+use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -105,9 +106,10 @@ class TwigTemplateContentObject
         $template = $this->twig->loadTemplate($name);
         $context = $this->twig->mergeGlobals($variables);
 
+        $content = $this->renderBlock($template, 'body', $context);
         $this->renderIntoPageRenderer($template, $context);
 
-        return $this->renderBlock($template, 'body', $context);
+        return $content;
     }
 
     private function getTemplate(array $conf, ContentObjectRenderer $cObj): string
@@ -176,6 +178,8 @@ class TwigTemplateContentObject
      *
      * This avoids getting some leaked buffer when an exception occurs.
      * Twig blocks are not taking care of it as they are not meant to be rendered directly.
+     *
+     * @throws \Exception
      */
     private function renderBlock(Template $template, $block, array $context): string
     {
@@ -193,6 +197,16 @@ class TwigTemplateContentObject
             }
 
             throw $e;
+        } catch (\Twig_Error_Runtime $e) {
+            // '404 not found' exceptions thrown by the controller are converted to a
+            // \Twig_Error_Runtime in the 'renderBlock', but the real exception is still available as the previous one.
+            // If thrown by a controller, then the previous exception is typically a ImmediateResponseException which
+            // includes the rendered error page.
+            while (ob_get_level() > $level) {
+                ob_end_clean();
+            }
+
+            throw $e->getPrevious() instanceof ImmediateResponseException ? $e->getPrevious() : $e;
         }
     }
 }
