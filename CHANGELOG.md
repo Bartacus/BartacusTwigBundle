@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Add temporary conflicts with Twig 1.41.0|2.10.0 and up
 
 ## [1.0.2] - 2019-05-15
 ### Fixed
