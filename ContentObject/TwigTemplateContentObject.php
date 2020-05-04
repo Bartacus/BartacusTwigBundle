@@ -24,6 +24,9 @@ declare(strict_types=1);
 namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Template;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -85,9 +88,9 @@ class TwigTemplateContentObject
      *
      * @param array $conf Array of TypoScript properties
      *
-     * @throws \Twig_Error_Loader  When the template cannot be found
-     * @throws \Twig_Error_Runtime When a previously generated cache is corrupted
-     * @throws \Twig_Error_Syntax  When an error occurred during compilation
+     * @throws LoaderError  When the template cannot be found
+     * @throws RuntimeError When a previously generated cache is corrupted
+     * @throws SyntaxError  When an error occurred during compilation
      *
      * @return string The rendered output
      */
@@ -197,7 +200,7 @@ class TwigTemplateContentObject
             }
 
             throw $e;
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (RuntimeError $e) {
             // '404 not found' exceptions thrown by the controller are converted to a
             // \Twig_Error_Runtime in the 'renderBlock', but the real exception is still available as the previous one.
             // If thrown by a controller, then the previous exception is typically a ImmediateResponseException which
