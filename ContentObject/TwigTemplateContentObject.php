@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
+use Bartacus\Bundle\BartacusBundle\Bootstrap\SymfonyBootstrap;
 use Twig\Environment;
 use Twig\Template;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
@@ -33,11 +34,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 class TwigTemplateContentObject
 {
     /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
      * @var TypoScriptService
      */
     private $typoScriptService;
@@ -47,9 +43,8 @@ class TwigTemplateContentObject
      */
     private $pageRenderer;
 
-    public function __construct(Environment $twig, TypoScriptService $typoScriptService, PageRenderer $pageRenderer)
+    public function __construct(TypoScriptService $typoScriptService, PageRenderer $pageRenderer)
     {
-        $this->twig = $twig;
         $this->typoScriptService = $typoScriptService;
         $this->pageRenderer = $pageRenderer;
     }
@@ -101,10 +96,10 @@ class TwigTemplateContentObject
 
         $variables = $this->getContentObjectVariables($conf, $cObj);
         $variables['settings'] = $this->transformSettings($conf);
-
+        $twig = $this->getTwigEnvironment();
         /** @var Template $template */
-        $template = $this->twig->loadTemplate($name);
-        $context = $this->twig->mergeGlobals($variables);
+        $template = $twig->loadTemplate($name);
+        $context = $twig->mergeGlobals($variables);
 
         $content = $this->renderBlock($template, 'body', $context);
         $this->renderIntoPageRenderer($template, $context);
@@ -208,5 +203,10 @@ class TwigTemplateContentObject
 
             throw $e->getPrevious() instanceof ImmediateResponseException ? $e->getPrevious() : $e;
         }
+    }
+
+    private function getTwigEnvironment(): Environment
+    {
+        return SymfonyBootstrap::getKernel()->getContainer()->get('twig');
     }
 }
