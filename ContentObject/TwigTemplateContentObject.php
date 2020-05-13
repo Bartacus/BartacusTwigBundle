@@ -25,7 +25,11 @@ namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
 use Bartacus\Bundle\BartacusBundle\Bootstrap\SymfonyBootstrap;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Template;
+use Twig\TemplateWrapper;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -80,9 +84,9 @@ class TwigTemplateContentObject
      *
      * @param array $conf Array of TypoScript properties
      *
-     * @throws \Twig_Error_Loader  When the template cannot be found
-     * @throws \Twig_Error_Runtime When a previously generated cache is corrupted
-     * @throws \Twig_Error_Syntax  When an error occurred during compilation
+     * @throws LoaderError  When the template cannot be found
+     * @throws RuntimeError When a previously generated cache is corrupted
+     * @throws SyntaxError  When an error occurred during compilation
      *
      * @return string The rendered output
      */
@@ -97,8 +101,8 @@ class TwigTemplateContentObject
         $variables = $this->getContentObjectVariables($conf, $cObj);
         $variables['settings'] = $this->transformSettings($conf);
         $twig = $this->getTwigEnvironment();
-        /** @var Template $template */
-        $template = $twig->loadTemplate($name);
+        /** @var TemplateWrapper $template */
+        $template = $twig->load($name);
         $context = $twig->mergeGlobals($variables);
 
         $content = $this->renderBlock($template, 'body', $context);
@@ -133,9 +137,7 @@ class TwigTemplateContentObject
             if (!\in_array($variableName, $reservedVariables, true)) {
                 $variables[$variableName] = $cObj->cObjGetSingle($cObjType, $variablesToProcess[$variableName.'.']);
             } else {
-                throw new \InvalidArgumentException(
-                    'Cannot use reserved name "'.$variableName.'" as variable name in TWIGTEMPLATE.'
-                );
+                throw new \InvalidArgumentException('Cannot use reserved name "'.$variableName.'" as variable name in TWIGTEMPLATE.');
             }
         }
 
@@ -154,7 +156,7 @@ class TwigTemplateContentObject
         return [];
     }
 
-    private function renderIntoPageRenderer(Template $template, array $context): void
+    private function renderIntoPageRenderer(TemplateWrapper $template, array $context): void
     {
         $header = $this->renderBlock($template, 'header', $context);
         $footer = $this->renderBlock($template, 'footer', $context);
@@ -176,7 +178,7 @@ class TwigTemplateContentObject
      *
      * @throws \Exception
      */
-    private function renderBlock(Template $template, $block, array $context): string
+    private function renderBlock(TemplateWrapper $template, $block, array $context): string
     {
         $level = ob_get_level();
         ob_start();
@@ -192,7 +194,7 @@ class TwigTemplateContentObject
             }
 
             throw $e;
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (RuntimeError $e) {
             // '404 not found' exceptions thrown by the controller are converted to a
             // \Twig_Error_Runtime in the 'renderBlock', but the real exception is still available as the previous one.
             // If thrown by a controller, then the previous exception is typically a ImmediateResponseException which

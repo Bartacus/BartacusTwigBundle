@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [2.0.0] - 2020-05-13
+### Added
+- Compatibility with  TYPO3 10.4 LTS 
+- Compatibility with Twig 3.x
+### Removed
+- Compatibility with Twig 1.x
+- Compatibility with TYPO3 8.7 LTS
+
 ## [1.0.4] - 2020-05-12
 ### Fixed
 - Support for USER_INT
@@ -28,7 +36,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Compatible with TYPO3 8.7 LTS and 9.5 LTS
 - Compatible with Symfony 3 and 4
 
-[Unreleased]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/1.0.4...HEAD
+[Unreleased]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/1.0.4...2.0.0
 [1.0.4]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/1.0.1...1.0.2

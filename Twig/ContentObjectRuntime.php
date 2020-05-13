@@ -89,10 +89,7 @@ class ContentObjectRuntime implements RuntimeExtensionInterface
 
         foreach ($pathSegments as $segment) {
             if (!\array_key_exists($segment.'.', $setup)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'TypoScript object path "%s" does not exist',
-                    $typoScriptObjectPath
-                ));
+                throw new \InvalidArgumentException(sprintf('TypoScript object path "%s" does not exist', $typoScriptObjectPath));
             }
 
             $setup = $setup[$segment.'.'];
