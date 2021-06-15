@@ -23,9 +23,9 @@
         "symfony/dependency-injection": "^4.0 || ^5.00",
         "symfony/http-kernel": "^4.0 || ^5.0",
         "twig/twig": "^2.10|^3.0",
-        "typo3/cms-core": "^9.5 || ^10.4",
-        "typo3/cms-extbase": "^9.5 || ^10.4",
-        "typo3/cms-frontend": "^9.5 || ^10.4"
+        "typo3/cms-core": "^9.5 || ^10.4 || ^11.2",
+        "typo3/cms-extbase": "^9.5 || ^10.4 || ^11.2",
+        "typo3/cms-frontend": "^9.5 || ^10.4 || ^11.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.5",
