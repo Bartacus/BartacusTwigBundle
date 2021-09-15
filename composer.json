@@ -17,7 +17,6 @@
         }
     ],
     "require": {
-        "php": "^7.2",
         "bartacus/bartacus-bundle": "^2.0 || ^3.0",
         "symfony/config": "^4.0 || ^5.0",
         "symfony/dependency-injection": "^4.0 || ^5.00",
