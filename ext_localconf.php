@@ -21,7 +21,4 @@
 
 defined('TYPO3_MODE') || die();
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = [
-    'TWIGTEMPLATE',
-    \Bartacus\Bundle\TwigBundle\ContentObject\TwigTemplateContentObject::class,
-];
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['TWIGTEMPLATE'] = \Bartacus\Bundle\TwigBundle\ContentObject\TwigTemplateContentObject::class;
