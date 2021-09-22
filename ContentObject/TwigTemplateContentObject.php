@@ -33,7 +33,6 @@ use Twig\TemplateWrapper;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
