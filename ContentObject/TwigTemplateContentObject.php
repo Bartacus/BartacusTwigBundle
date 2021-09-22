@@ -33,9 +33,11 @@ use Twig\TemplateWrapper;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
-class TwigTemplateContentObject
+class TwigTemplateContentObject extends AbstractContentObject
 {
     /**
      * @var TypoScriptService
@@ -45,12 +47,18 @@ class TwigTemplateContentObject
     /**
      * @var PageRenderer
      */
-    private $pageRenderer;
+    protected $pageRenderer;
 
-    public function __construct(TypoScriptService $typoScriptService, PageRenderer $pageRenderer)
+    /**
+     * Default constructor, which also instantiates the MarkerBasedTemplateService.
+     *
+     * @param ContentObjectRenderer $cObj
+     */
+    public function __construct(TypoScriptService $typoScriptService, PageRenderer $pageRenderer, ContentObjectRenderer $cObj)
     {
         $this->typoScriptService = $typoScriptService;
         $this->pageRenderer = $pageRenderer;
+        parent::__construct($cObj);
     }
 
     /**
@@ -58,10 +66,10 @@ class TwigTemplateContentObject
      * @param array  $conf  The array with TypoScript properties for the content object
      * @param string $TSkey a string label used for the internal debugging tracking
      */
-    public function cObjGetSingleExt(string $name, array $conf, $TSkey, ContentObjectRenderer $cObj): string
+    public function cObjGetSingleExt(string $name, array $conf = [], $TSkey, ContentObjectRenderer $cObj): string
     {
         if ('TWIGTEMPLATE' === $name) {
-            return $this->render($conf, $cObj);
+            return $this->render($conf);
         }
 
         return '';
@@ -90,8 +98,10 @@ class TwigTemplateContentObject
      *
      * @return string The rendered output
      */
-    public function render(array $conf, ContentObjectRenderer $cObj): string
+    public function render($conf = []): string
     {
+        $cObj = $this->getContentObjectRenderer();
+
         if (!\is_array($conf)) {
             $conf = [];
         }
@@ -212,3 +222,4 @@ class TwigTemplateContentObject
         return SymfonyBootstrap::getKernel()->getContainer()->get('twig');
     }
 }
+
