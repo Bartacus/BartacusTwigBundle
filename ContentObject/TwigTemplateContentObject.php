@@ -65,7 +65,7 @@ class TwigTemplateContentObject extends AbstractContentObject
      * @param array  $conf  The array with TypoScript properties for the content object
      * @param string $TSkey a string label used for the internal debugging tracking
      */
-    public function cObjGetSingleExt(string $name, array $conf = [], $TSkey, ContentObjectRenderer $cObj): string
+    public function cObjGetSingleExt(string $name, array $conf, $TSkey, ContentObjectRenderer $cObj): string
     {
         if ('TWIGTEMPLATE' === $name) {
             return $this->render($conf);
