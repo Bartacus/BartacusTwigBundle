@@ -14,12 +14,12 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.4",
         "bartacus/bartacus-bundle": "~1.1.13 || ^1.2.2 || ^2.0",
         "symfony/config": "^3.3 || ^4.0",
         "symfony/dependency-injection": "^3.3 || ^4.0",
         "symfony/http-kernel": "^3.3 || ^4.0",
-        "twig/twig": "^1.35 || ^2.0",
+        "twig/twig": "^2.10",
         "typo3/cms-core": "^8.7 || ^9.5",
         "typo3/cms-extbase": "^8.7 || ^9.5",
         "typo3/cms-frontend": "^8.7 || ^9.5"
@@ -28,9 +28,6 @@
         "friendsofphp/php-cs-fixer": "^2.5",
         "roave/security-advisories": "dev-master",
         "typo3/cms-composer-installers": "^1.5 || ^2.0"
-    },
-    "conflict": {
-        "twig/twig": ">=1.41.0 <2.0.0 || >=2.10.0"
     },
     "replace": {
         "bartacus_twig": "self.version"
