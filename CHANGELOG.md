@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Removed
+- Drop old documentation
+
 ## [2.1.0] - 2021-10-06
 ### Added
 - TYPO3 v11.5 support
