@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Drop old documentation
 - Drop php-cs-fixer
+- Drop roave/security-advisories
 
 ## [2.1.0] - 2021-10-06
 ### Added
