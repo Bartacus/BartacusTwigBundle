@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.2.1] - 2023-02-27
+### Fixed
+- Drop deprecated / unused TSFE property
+
 ## [2.2.0] - 2023-02-27
 ### Changed
 - Increase minimum composer package versions
@@ -56,8 +60,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Compatible with TYPO3 8.7 LTS and 9.5 LTS
 - Compatible with Symfony 3 and 4
 
-[Unreleased]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.2.0...HEAD
-[2.1.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.1.0...2.2.0
+[Unreleased]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.2.1...HEAD
+[2.2.1]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.2.0...2.2.1
+[2.2.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.0.1...2.1.0
 [2.0.1]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/1.0.4...2.0.0

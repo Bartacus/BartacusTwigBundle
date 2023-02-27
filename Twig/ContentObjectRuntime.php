@@ -127,6 +127,5 @@ class ContentObjectRuntime implements RuntimeExtensionInterface
         $this->tsfeBackup = $GLOBALS['TSFE'] ?? null;
 
         $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->cObjectDepthCounter = 100;
     }
 }
