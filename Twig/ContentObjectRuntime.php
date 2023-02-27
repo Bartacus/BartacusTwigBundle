@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace Bartacus\Bundle\TwigBundle\Twig;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Twig\Extension\RuntimeExtensionInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -32,15 +34,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class ContentObjectRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var array
-     */
-    private $typoScriptSetup;
-
-    /**
-     * @var TypoScriptFrontendController contains a backup of the current['TSFE'] if used in BE mode
-     */
-    private $tsfeBackup;
+    private array $typoScriptSetup;
+    private ?TypoScriptFrontendController $tsfeBackup = null;
 
     public function __construct(ConfigurationManagerInterface $configurationManager)
     {
@@ -51,7 +46,7 @@ class ContentObjectRuntime implements RuntimeExtensionInterface
      * Renders the TypoScript object in the given TypoScript setup path.
      *
      * @param string              $typoScriptObjectPath The TypoScript setup path of the TypoScript object to render
-     * @param array|object|string $data                 The data to be used for rendering the cObject. Can be an
+     * @param object|array|string $data                 The data to be used for rendering the cObject. Can be an
      *                                                  object, array or string.
      * @param string              $currentValueKey      The key of the value mapped as current in the data. It will be
      *                                                  used when using current=1
@@ -60,13 +55,20 @@ class ContentObjectRuntime implements RuntimeExtensionInterface
      *                                                  be set if rendering a FILES cObject where file references are
      *                                                  used, or if the data argument is a database record.
      */
-    public function cObject(string $typoScriptObjectPath, $data = [], string $currentValueKey = '', string $table = ''): string
+    public function cObject(string $typoScriptObjectPath, object|array|string $data = [], string $currentValueKey = '', string $table = ''): string
     {
-        if ('BE' === TYPO3_MODE) {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+            $isBackendMode = ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
+        } else {
+            $isBackendMode = true;
+        }
+
+        if ($isBackendMode) {
             $this->simulateFrontendEnvironment();
         }
 
         $currentValue = null;
+
         if (\is_object($data)) {
             $data = ObjectAccess::getGettableProperties($data);
         } elseif (\is_string($data) || is_numeric($data)) {
@@ -97,7 +99,7 @@ class ContentObjectRuntime implements RuntimeExtensionInterface
 
         $content = $cObj->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment.'.']);
 
-        if (TYPO3_MODE === 'BE') {
+        if ($isBackendMode) {
             $this->resetFrontendEnvironment();
         }
 
@@ -123,6 +125,7 @@ class ContentObjectRuntime implements RuntimeExtensionInterface
     private function simulateFrontendEnvironment(): void
     {
         $this->tsfeBackup = $GLOBALS['TSFE'] ?? null;
+
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->cObjectDepthCounter = 100;
     }

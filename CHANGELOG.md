@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Increase minimum composer package versions
+- Fix php inspection warnings and errors
+
+### Removed
+- Drop TYPO3 v9 + TYPO3 v10 support
+- Drop old documentation
+- Drop php-cs-fixer
+- Drop roave/security-advisories
+
 ## [2.1.0] - 2021-10-06
 ### Added
 - TYPO3 v11.5 support

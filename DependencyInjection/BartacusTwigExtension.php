@@ -30,6 +30,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class BartacusTwigExtension extends Extension
 {
+    /**
+     * @throws \Exception
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader(

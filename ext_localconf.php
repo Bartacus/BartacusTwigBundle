@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Bartacus Twig bundle.
  *
@@ -19,6 +21,6 @@
  * along with this bundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('TYPO3_MODE') || die();
+use Bartacus\Bundle\TwigBundle\ContentObject\TwigTemplateContentObject;
 
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['TWIGTEMPLATE'] = \Bartacus\Bundle\TwigBundle\ContentObject\TwigTemplateContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['TWIGTEMPLATE'] = TwigTemplateContentObject::class;
