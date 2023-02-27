@@ -25,10 +25,7 @@ namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
 use Bartacus\Bundle\BartacusBundle\Bootstrap\SymfonyBootstrap;
 use Twig\Environment;
-use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
-use Twig\Template;
 use Twig\TemplateWrapper;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -38,32 +35,19 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class TwigTemplateContentObject extends AbstractContentObject
 {
-    /**
-     * @var TypoScriptService
-     */
-    private $typoScriptService;
+    private TypoScriptService $typoScriptService;
 
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
-
-    /**
-     * Default constructor, which also instantiates the MarkerBasedTemplateService.
-     *
-     * @param ContentObjectRenderer $cObj
-     */
     public function __construct(TypoScriptService $typoScriptService, PageRenderer $pageRenderer, ContentObjectRenderer $cObj)
     {
         $this->typoScriptService = $typoScriptService;
         $this->pageRenderer = $pageRenderer;
+
         parent::__construct($cObj);
     }
 
     /**
-     * @param string $name  The content object name, eg. "TWIGTEMPLATE"
-     * @param array  $conf  The array with TypoScript properties for the content object
-     * @param string $TSkey a string label used for the internal debugging tracking
+     * @throws \Throwable
+     * @noinspection PhpUnusedParameterInspection
      */
     public function cObjGetSingleExt(string $name, array $conf, $TSkey, ContentObjectRenderer $cObj): string
     {
@@ -89,30 +73,25 @@ class TwigTemplateContentObject extends AbstractContentObject
      *   mylabel.value = Label from TypoScript coming
      * }
      *
-     * @param array $conf Array of TypoScript properties
-     *
-     * @throws LoaderError  When the template cannot be found
-     * @throws RuntimeError When a previously generated cache is corrupted
-     * @throws SyntaxError  When an error occurred during compilation
-     *
-     * @return string The rendered output
+     * @throws \Throwable
      */
     public function render($conf = []): string
     {
-        $cObj = $this->getContentObjectRenderer();
-
         if (!\is_array($conf)) {
             $conf = [];
         }
+
+        $cObj = $this->getContentObjectRenderer();
 
         $name = $this->getTemplate($conf, $cObj);
 
         $variables = $this->getContentObjectVariables($conf, $cObj);
         $variables['settings'] = $this->transformSettings($conf);
+
         $twig = $this->getTwigEnvironment();
-        /** @var TemplateWrapper $template */
-        $template = $twig->load($name);
-        $context = $twig->mergeGlobals($variables);
+
+        $template = $twig?->load($name);
+        $context = $twig?->mergeGlobals($variables);
 
         $content = $this->renderBlock($template, 'body', $context);
         $this->renderIntoPageRenderer($template, $context);
@@ -143,11 +122,11 @@ class TwigTemplateContentObject extends AbstractContentObject
                 continue;
             }
 
-            if (!\in_array($variableName, $reservedVariables, true)) {
-                $variables[$variableName] = $cObj->cObjGetSingle($cObjType, $variablesToProcess[$variableName.'.']);
-            } else {
+            if (\in_array($variableName, $reservedVariables, true)) {
                 throw new \InvalidArgumentException('Cannot use reserved name "'.$variableName.'" as variable name in TWIGTEMPLATE.');
             }
+
+            $variables[$variableName] = $cObj->cObjGetSingle($cObjType, $variablesToProcess[$variableName.'.']);
         }
 
         $variables['data'] = $cObj->data;
@@ -165,6 +144,9 @@ class TwigTemplateContentObject extends AbstractContentObject
         return [];
     }
 
+    /**
+     * @throws \Throwable
+     */
     private function renderIntoPageRenderer(TemplateWrapper $template, array $context): void
     {
         $header = $this->renderBlock($template, 'header', $context);
@@ -185,21 +167,21 @@ class TwigTemplateContentObject extends AbstractContentObject
      * This avoids getting some leaked buffer when an exception occurs.
      * Twig blocks are not taking care of it as they are not meant to be rendered directly.
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    private function renderBlock(TemplateWrapper $template, $block, array $context): string
+    private function renderBlock(TemplateWrapper $template, string $block, array $context): string
     {
-        $level = ob_get_level();
-        ob_start();
+        $level = \ob_get_level();
+        \ob_start();
 
         try {
             $rendered = $template->renderBlock($block, $context);
-            ob_end_clean();
+            \ob_end_clean();
 
             return $rendered;
         } catch (\RuntimeException $e) {
-            while (ob_get_level() > $level) {
-                ob_end_clean();
+            while (\ob_get_level() > $level) {
+                \ob_end_clean();
             }
 
             throw $e;
@@ -208,17 +190,19 @@ class TwigTemplateContentObject extends AbstractContentObject
             // \Twig_Error_Runtime in the 'renderBlock', but the real exception is still available as the previous one.
             // If thrown by a controller, then the previous exception is typically a ImmediateResponseException which
             // includes the rendered error page.
-            while (ob_get_level() > $level) {
-                ob_end_clean();
+            while (\ob_get_level() > $level) {
+                \ob_end_clean();
             }
 
             throw $e->getPrevious() instanceof ImmediateResponseException ? $e->getPrevious() : $e;
         }
     }
 
-    private function getTwigEnvironment(): Environment
+    private function getTwigEnvironment(): ?Environment
     {
-        return SymfonyBootstrap::getKernel()->getContainer()->get('twig');
+        /** @noinspection MissingService */
+        $twig = SymfonyBootstrap::getKernel()?->getContainer()->get('twig');
+
+        return $twig instanceof Environment ? $twig : null;
     }
 }
-

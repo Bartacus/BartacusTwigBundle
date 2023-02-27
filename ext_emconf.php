@@ -21,6 +21,9 @@ declare(strict_types=1);
  * along with this bundle. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @noinspection PhpUndefinedVariableInspection
+ */
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Bartacus Twig Bundle',
     'description' => 'Support bundle for using Twig together with Bartacus and TYPO3',
