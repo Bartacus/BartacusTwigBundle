@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Increase minimum composer package versions
+
 ### Removed
 - Drop TYPO3 v9 + TYPO3 v10 support
 - Drop old documentation
