@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Removed
+- Drop TYPO3 v9 + TYPO3 v10 support
 - Drop old documentation
 - Drop php-cs-fixer
 - Drop roave/security-advisories
