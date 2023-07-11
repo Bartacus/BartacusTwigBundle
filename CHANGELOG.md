@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.0] - 2023-07-11
 ### Added
 - TYPO3 v12.4 support
 
@@ -63,7 +64,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Compatible with TYPO3 8.7 LTS and 9.5 LTS
 - Compatible with Symfony 3 and 4
 
-[Unreleased]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.2.1...HEAD
+[Unreleased]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.2.1...3.0.0
 [2.2.1]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.0.1...2.1.0
