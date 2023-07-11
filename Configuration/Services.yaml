@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: false
+    autoconfigure: false
+
+  Bartacus\Bundle\TwigBundle\ContentObject\TwigTemplateContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'TWIGTEMPLATE'

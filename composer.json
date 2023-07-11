@@ -6,7 +6,7 @@
     "license": "GPL-3.0-or-later",
     "authors": [
         {
-            "name": "Emily Karisch"
+            "name": "Stefan Herndler"
         },
         {
             "name": "Simon Kendler"
@@ -17,16 +17,16 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "composer-runtime-api": "^2.1",
-        "bartacus/bartacus-bundle": "^3.3",
-        "symfony/config": "^5.4",
-        "symfony/dependency-injection": "^5.4",
-        "symfony/http-kernel": "^5.4",
+        "bartacus/bartacus-bundle": "^4.0",
+        "symfony/config": "^6.2",
+        "symfony/dependency-injection": "^6.2",
+        "symfony/http-kernel": "^6.2",
         "twig/twig": "^3.5",
-        "typo3/cms-core": "^11.5",
-        "typo3/cms-extbase": "^11.5",
-        "typo3/cms-frontend": "^11.5"
+        "typo3/cms-core": "^12.4",
+        "typo3/cms-extbase": "^12.4",
+        "typo3/cms-frontend": "^12.4"
     },
     "autoload": {
         "psr-4": {
@@ -35,7 +35,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "3.0.x-dev"
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",

@@ -1,13 +1,11 @@
 <?xml version="1.0" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
         <service id="Bartacus\Bundle\TwigBundle\ContentObject\TwigTemplateContentObject">
-            <argument type="service" id="TYPO3\CMS\Core\TypoScript\TypoScriptService" />
-            <argument type="service" id="TYPO3\CMS\Core\Page\PageRenderer" />
-            <argument type="service" id="TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer" />
+            <argument type="service" id="Twig\Environment" />
             <tag name="bartacus.make_instance" />
         </service>
 
