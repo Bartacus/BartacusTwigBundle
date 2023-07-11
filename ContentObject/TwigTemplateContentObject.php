@@ -23,26 +23,22 @@ declare(strict_types=1);
 
 namespace Bartacus\Bundle\TwigBundle\ContentObject;
 
-use Bartacus\Bundle\BartacusBundle\Bootstrap\SymfonyBootstrap;
 use Twig\Environment;
 use Twig\Error\RuntimeError;
 use Twig\TemplateWrapper;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class TwigTemplateContentObject extends AbstractContentObject
 {
-    private TypoScriptService $typoScriptService;
+    private Environment $twig;
 
-    public function __construct(TypoScriptService $typoScriptService, PageRenderer $pageRenderer, ContentObjectRenderer $cObj)
+    public function __construct(Environment $twig)
     {
-        $this->typoScriptService = $typoScriptService;
-        $this->pageRenderer = $pageRenderer;
-
-        parent::__construct($cObj);
+        $this->twig = $twig;
     }
 
     /**
@@ -88,10 +84,8 @@ class TwigTemplateContentObject extends AbstractContentObject
         $variables = $this->getContentObjectVariables($conf, $cObj);
         $variables['settings'] = $this->transformSettings($conf);
 
-        $twig = $this->getTwigEnvironment();
-
-        $template = $twig?->load($name);
-        $context = $twig?->mergeGlobals($variables);
+        $template = $this->twig->load($name);
+        $context = $this->twig->mergeGlobals($variables);
 
         $content = $this->renderBlock($template, 'body', $context);
         $this->renderIntoPageRenderer($template, $context);
@@ -138,7 +132,10 @@ class TwigTemplateContentObject extends AbstractContentObject
     private function transformSettings(array $conf): array
     {
         if (isset($conf['settings.'])) {
-            return $this->typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
+            /** @var TypoScriptService $typoScriptService */
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+
+            return $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
         }
 
         return [];
@@ -153,11 +150,11 @@ class TwigTemplateContentObject extends AbstractContentObject
         $footer = $this->renderBlock($template, 'footer', $context);
 
         if (!empty(trim($header))) {
-            $this->pageRenderer->addHeaderData($header);
+            $this->getPageRenderer()->addHeaderData($header);
         }
 
         if (!empty(trim($footer))) {
-            $this->pageRenderer->addFooterData($footer);
+            $this->getPageRenderer()->addFooterData($footer);
         }
     }
 
@@ -196,13 +193,5 @@ class TwigTemplateContentObject extends AbstractContentObject
 
             throw $e->getPrevious() instanceof ImmediateResponseException ? $e->getPrevious() : $e;
         }
-    }
-
-    private function getTwigEnvironment(): ?Environment
-    {
-        /** @noinspection MissingService */
-        $twig = SymfonyBootstrap::getKernel()?->getContainer()->get('twig');
-
-        return $twig instanceof Environment ? $twig : null;
     }
 }
