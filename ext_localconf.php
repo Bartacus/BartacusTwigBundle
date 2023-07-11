@@ -20,7 +20,3 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License
  * along with this bundle. If not, see <http://www.gnu.org/licenses/>.
  */
-
-use Bartacus\Bundle\TwigBundle\ContentObject\TwigTemplateContentObject;
-
-$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['TWIGTEMPLATE'] = TwigTemplateContentObject::class;
