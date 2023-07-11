@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- TYPO3 v12.4 support
+
 ## [2.2.1] - 2023-02-27
 ### Fixed
 - Drop deprecated / unused TSFE property
