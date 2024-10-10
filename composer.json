@@ -17,16 +17,16 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "composer-runtime-api": "^2.1",
-        "bartacus/bartacus-bundle": "^4.0 || ^5.0",
-        "symfony/config": "^6.2",
-        "symfony/dependency-injection": "^6.2",
-        "symfony/http-kernel": "^6.2",
-        "twig/twig": "^3.5",
-        "typo3/cms-core": "^12.4",
-        "typo3/cms-extbase": "^12.4",
-        "typo3/cms-frontend": "^12.4"
+        "bartacus/bartacus-bundle": "dev-typo3v13",
+        "symfony/config": "^7.1",
+        "symfony/dependency-injection": "^7.1",
+        "symfony/http-kernel": "^7.1",
+        "twig/twig": "^3.14",
+        "typo3/cms-core": "^13.3",
+        "typo3/cms-extbase": "^13.3",
+        "typo3/cms-frontend": "^13.3"
     },
     "autoload": {
         "psr-4": {
@@ -35,7 +35,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev"
+            "dev-master": "4.0.x-dev"
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",

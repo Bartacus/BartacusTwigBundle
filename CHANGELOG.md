@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.0.0] - 2024-10-11
+### Added
+- Set minimum TYPO3 version to 13.3
+- Set minimum Symfony version to 7.1
+- Set minimum php version to 8.3
+
 ## [3.0.1] - 2024-02-28
 ### Changed
 - Add BartacusBundle v5 support
