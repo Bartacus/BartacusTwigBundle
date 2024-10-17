@@ -34,11 +34,9 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class TwigTemplateContentObject extends AbstractContentObject
 {
-    private Environment $twig;
-
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        private readonly Environment $twig,
+    ) {
     }
 
     /**
@@ -85,7 +83,8 @@ class TwigTemplateContentObject extends AbstractContentObject
         $variables['settings'] = $this->transformSettings($conf);
 
         $template = $this->twig->load($name);
-        $context = $this->twig->mergeGlobals($variables);
+
+        $context = $variables + $this->twig->getGlobals();
 
         $content = $this->renderBlock($template, 'body', $context);
         $this->renderIntoPageRenderer($template, $context);

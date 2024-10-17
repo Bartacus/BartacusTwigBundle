@@ -37,8 +37,9 @@ class ContentObjectRuntime implements RuntimeExtensionInterface
     private array $typoScriptSetup;
     private ?TypoScriptFrontendController $tsfeBackup = null;
 
-    public function __construct(ConfigurationManagerInterface $configurationManager)
-    {
+    public function __construct(
+        ConfigurationManagerInterface $configurationManager,
+    ) {
         $this->typoScriptSetup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
     }
 
