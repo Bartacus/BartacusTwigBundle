@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.0.0] - 2024-10-11
 ### Added
-- Set minimum TYPO3 version to 13.3
+- Set minimum TYPO3 version to 13.4
 - Set minimum Symfony version to 7.1
 - Set minimum php version to 8.3
 
