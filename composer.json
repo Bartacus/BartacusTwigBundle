@@ -19,7 +19,7 @@
     "require": {
         "php": "^8.3",
         "composer-runtime-api": "^2.1",
-        "bartacus/bartacus-bundle": "dev-typo3v13",
+        "bartacus/bartacus-bundle": "^6.0",
         "symfony/config": "^7.1",
         "symfony/dependency-injection": "^7.1",
         "symfony/http-kernel": "^7.1",

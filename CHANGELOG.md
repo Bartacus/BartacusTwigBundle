@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [4.0.0] - 2024-10-11
+## [4.0.0] - 2024-10-17
 ### Added
 - Set minimum TYPO3 version to 13.4
 - Set minimum Symfony version to 7.1
@@ -74,7 +74,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Compatible with TYPO3 8.7 LTS and 9.5 LTS
 - Compatible with Symfony 3 and 4
 
-[Unreleased]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/3.0.1...HEAD
+[Unreleased]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/4.0.0...HEAD
+[4.0.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/3.0.1...4.0.0
 [3.0.1]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.2.1...3.0.0
 [2.2.1]: https://github.com/Bartacus/BartacusPlatformshBundle/compare/2.2.0...2.2.1
