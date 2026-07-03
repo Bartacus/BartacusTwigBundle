@@ -1,3 +1,6 @@
+# NO LONGER MAINTAINED
+This bundle is not maintained anymore as it is now integrated into https://github.com/Bartacus/BartacusBundle with TYPO3 v14.
+
 BartacusTwigBundle
 ==================
 
